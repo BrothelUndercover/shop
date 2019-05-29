@@ -15,7 +15,7 @@
 
 Route::redirect('/', '/products')->name('root');
 Route::get('products', 'ProductsController@index')->name('products.index');
-Route::get('products/{product}', 'ProductsController@show')->name('products.show');
+// Route::get('products/{product}', 'ProductsController@show')->name('products.show');
 Auth::routes();
 
 Route::middleware('auth')->group(function(){
@@ -35,6 +35,11 @@ Route::middleware('auth')->group(function(){
 
 		//取消收藏
 		Route::delete('products/{product}/favorite','ProductsController@disfavor')->name('products.disfavor');
+
+		//收藏列表
+		Route::get('products/favorites','ProductsController@favorites')->name('products.favorites');
 	});
 
 });
+
+Route::get('products/{product}', 'ProductsController@show')->name('products.show');
