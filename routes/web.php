@@ -15,6 +15,7 @@
 
 Route::redirect('/', '/products')->name('root');
 Route::get('products', 'ProductsController@index')->name('products.index');
+Route::get('products/{product}', 'ProductsController@show')->name('products.show');
 Auth::routes();
 
 Route::middleware('auth')->group(function(){
@@ -29,6 +30,11 @@ Route::middleware('auth')->group(function(){
 		Route::get('user_addresses/{user_address}','UserAddressesController@edit')->name('user_addresses.edit'); //收货地址白编辑
 		Route::put('user_addresses/{user_address}','UserAddressesController@update')->name('user_addresses.update'); //put编辑收货地址
 		Route::delete('user_addresses/{user_address}','UserAddressesController@destroy')->name('user_addresses.destroy'); //删除收货地址
+		//收藏
+		Route::post('products/{product}/favorite','ProductsController@favor')->name('products.favor');
+
+		//取消收藏
+		Route::delete('products/{product}/favorite','ProductsController@disfavor')->name('products.disfavor');
 	});
 
 });

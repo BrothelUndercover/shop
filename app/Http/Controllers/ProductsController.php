@@ -38,7 +38,45 @@ class ProductsController extends Controller
     	}
 
     	$products = $builder->paginate(16);
-    	
+
     	return view('products.index',['products'=>$products,'filters'=>['search'=>$search,'order'=>$order]]);
     }
+
+    //商品详情页
+    public function show(Request $request,Product $product)
+    {
+    	if (!$product->on_sale) {
+    		throw new InvalidRequestException("商品未上架");
+    	}
+    	//默认收藏状体为false
+    	$favored = false;
+    	if ($user = $request->user()) {
+    		//boolval(var) 用于将值转为布尔值
+    		$favored  = boolval($user->favoriteProducts()->find($product->id));
+    	}
+    	return view('products.show', ['product' => $product,'favored'=>$favored]);
+    }
+    //收藏
+    public function favor(Request $request, Product $product)
+	{
+		$user = $request->user();
+
+		if ($user->favoriteProducts()->find($product->id)) {
+			return [];
+		}
+
+		$user->favoriteProducts()->attach($product);
+
+		return [];
+	}
+
+	//取消收藏
+	public function disfavor(Product $product,Request $request)
+	{
+		$user = $request->user();
+
+		$user->favoriteProducts()->detach($product);
+
+		return [];
+	}
 }
