@@ -127,6 +127,8 @@ return [
 
     'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
+    'order_ttl' => env('ORDER_TTL',10), //订单延时任务
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

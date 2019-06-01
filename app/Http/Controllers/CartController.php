@@ -39,9 +39,10 @@ class CartController extends Controller
     public function index(Request $request)
     {
     	$cartItems = $request->user()->cartItems()->with(['productSku.product'])->get();
+    	$addresses = $request->user()->addresses()->orderBy('last_used_at','desc')->get();
     	
     	// $cartItems1 = $request->user()->cartItems()->get();
-    	return view('cart.index', ['cartItems' => $cartItems]);
+    	return view('cart.index', ['cartItems' => $cartItems,'addresses' => $addresses]);
     }
     //购物车移除商品
     public function remove(ProductSku $sku,Request $request)
